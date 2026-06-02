@@ -47,48 +47,6 @@ outputs/
 
 ---
 
-## Benchmarks
-
-The optimized GK receiver is compared against:
-
-### Holevo Capacity
-
-[
-C_\infty(N)
-===========
-
-h_2\left(\frac{1-e^{-2N}}{2}\right)
-]
-
-representing the ultimate quantum capacity achievable using collective measurements.
-
-### Dolinar / Helstrom Capacity
-
-[
-C_1(N)
-======
-
-1-h_2(P_e)
-]
-
-where
-
-[
-P_e
-===
-
-\frac12
-\left(
-1-\sqrt{1-e^{-4N}}
-\right).
-]
-
-### Kennedy Nulling Receiver
-
-A practical baseline receiver using the conventional nulling condition.
-
----
-
 ## Installation
 
 ```bash
@@ -126,27 +84,19 @@ The framework produces:
 * Capacity versus photon number
 * Optimal displacement versus photon number
 * Optimal prior probability versus photon number
-* Deterministic and Gamma-Gamma channel comparisons
+
 
 ---
 
-## Future Work
 
-Planned extensions include:
+## Authors
 
-* M-ary PSK and QAM signaling
-* Non-stationary turbulence models
-* Bayesian receiver adaptation
-* Adaptive displacement optimization
-* Neural ODE and stochastic channel modeling
-* Photon-number-resolving receiver architectures
-
----
-
-## Author
-
-Md Ashraf Hossain Ifty
-
-Department of Electrical and Computer Engineering
-
+### Md Ashraf Hossain Ifty
+Department of Electrical and Computer Engineering  
 The University of Alabama in Huntsville
+
+### Rahul Kumar Bhadani
+Department of Electrical and Computer Engineering  
+The University of Alabama in Huntsville
+
+
