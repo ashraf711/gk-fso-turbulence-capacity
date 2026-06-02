@@ -4,11 +4,11 @@ import matplotlib.pyplot as plt
 
 def _setup_publication_style():
     plt.rcParams.update({
-        "font.size": 18,
-        "axes.labelsize": 20,
-        "legend.fontsize": 18,
-        "xtick.labelsize": 11,
-        "ytick.labelsize": 11,
+        "font.size": 25,
+        "axes.labelsize": 25,
+        "legend.fontsize": 22,
+        "xtick.labelsize": 15,
+        "ytick.labelsize": 15,
         "axes.linewidth": 1.1,
         "xtick.direction": "out",
         "ytick.direction": "out",
@@ -73,7 +73,7 @@ def plot_capacity_vs_N(results, outpath):
         plt.plot(N[order], results["Kennedy_optML_GG"][order], "-", label=rf"GK turbulence, $(\beta,p)$ optimized", lw=2.8)
 
    
-    plt.legend(frameon=False, fontsize=15)
+    plt.legend(frameon=False, fontsize=15.5)
     
     plt.xlabel(r"Mean photon number, $N=|\alpha|^2$")
     plt.ylabel(r"Capacity (bits/symbol)")
