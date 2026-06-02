@@ -50,12 +50,8 @@ outputs/
 ## Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/REPOSITORY_NAME.git
-cd REPOSITORY_NAME
-
-python3 -m venv myenv
-source myenv/bin/activate
-
+git clone git@github.com:ashraf711/gk-fso-turbulence-capacity.git
+cd gk-fso-turbulence-capacity
 pip install -r requirements.txt
 ```
 
