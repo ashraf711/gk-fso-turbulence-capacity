@@ -1,4 +1,5 @@
 import torch
+import torch.nn.functional as F
 from .kennedy_channel import I_kennedy_t,  I_kennedy_t_avg_gamma_gamma
 from .turbulence import sample_gamma_gamma
 
@@ -20,8 +21,8 @@ def maximize_I_ml(
     common_random_numbers=True,
 ):
     """
-    For a single N, maximize I(X;Y) over real beta and p∈(0,1) using Torch/Adam.
-    p = sigmoid(theta_p), beta is unconstrained.
+    For a single N, maximize I(X;Y) over beta>0 and p∈(0,1) using Torch/Adam.
+    p = sigmoid(theta_p), beta = softplus(beta_raw).
     Returns: best_I, best_beta, best_p
     """
     torch.manual_seed(seed)
@@ -42,28 +43,33 @@ def maximize_I_ml(
     for r in range(restarts):
         # Init
         if init is not None and r == 0:
-            beta = torch.tensor(init["beta"], dtype=torch.double, device=device)
+            beta0 = torch.tensor(abs(init["beta"]), dtype=torch.double, device=device)
+            beta0 = torch.clamp(beta0, min=1e-12)
+            beta_raw = torch.log(torch.expm1(beta0))
             p0 = torch.tensor(init["p"], dtype=torch.double, device=device).clamp(1e-12, 1-1e-12)
             theta_p = torch.logit(p0)
 
         else:
-            beta = torch.randn((), dtype=torch.double, device=device) * 0.5
+            beta0 = torch.abs(torch.randn((), dtype=torch.double, device=device) * 0.5)
+            beta0 = torch.clamp(beta0, min=1e-12)
+            beta_raw = torch.log(torch.expm1(beta0))
             theta_p = torch.randn((), dtype=torch.double, device=device) * 0.5
 
-        beta.requires_grad_(True)
+        beta_raw.requires_grad_(True)
         theta_p.requires_grad_(True)
 
-        opt = torch.optim.Adam([beta, theta_p], lr=lr)
+        opt = torch.optim.Adam([beta_raw, theta_p], lr=lr)
         scheduler = torch.optim.lr_scheduler.ExponentialLR(opt, gamma=0.995)
 
         best_I_r = -1.0
-        best_beta_r = float(beta.item())
+        best_beta_r = float(F.softplus(beta_raw).item())
         best_p_r = float(torch.sigmoid(theta_p).item())
         no_improve = 0
 
         for t in range(steps):
             p = torch.sigmoid(theta_p)
             p = torch.clamp(p, 1e-12, 1 - 1e-12)
+            beta = F.softplus(beta_raw)
 
             if use_gamma_gamma:
                 # Use fixed samples if provided, otherwise resample each call
